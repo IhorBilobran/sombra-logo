@@ -1,7 +1,4 @@
-import * as THREE from './src/Three'
-import { PerspectiveCamera } from './typings/Three.d';
-
-let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, controls, geometry;
+let camera, scene, Renderer, controls, geometry;
 
 function init() {
     scene = new THREE.Scene();
