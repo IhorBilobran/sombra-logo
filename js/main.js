@@ -16,11 +16,11 @@ function init() {
 
     controls = new THREE.OrbitControls(camera, renderer.domElement)
 
-    let texture = (new THREE.TextureLoader).load("../img/sombra-logo.svg")
+    // let texture = (new THREE.TextureLoader).load("../img/sombra-logo.svg")
     let material = new THREE.PointsMaterial({
         size: 10,
-        // VertexColors: THREE.VertexColors,
-        map: texture
+        vertexColors: THREE.VertexColors,
+        // map: texture
     });
 
     geometry = new THREE.Geometry();
