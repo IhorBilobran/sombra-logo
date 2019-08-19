@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 
   private destroyStatus = false;
 
-  private initCameraPosition = 1100;
+  private initCameraPosition = 1900;
 
   constructor() {
   }
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
 
     this.container.nativeElement.appendChild(this.renderer.domElement);
 
-    this.camera = new THREE.PerspectiveCamera(45, this.sceneWidth / this.sceneHeight, 0.1, 2000);
+    this.camera = new THREE.PerspectiveCamera(25, this.sceneWidth / this.sceneHeight, 2, 5000);
     this.camera.position.z = this.initCameraPosition;
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -102,17 +102,17 @@ export class AppComponent implements OnInit {
     this.pointsGeometry = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
-      size: 12,
+      size: 22,
       vertexColors: THREE.VertexColors,
       alphaTest: 0.5
     });
 
-    for (let i = 0; i < 29250; i++) {
+    for (let i = 0; i < 17550; i++) {
       this.pointsGeometry.vertices.push(
         new THREE.Vector3(
-          THREE.Math.randInt(-2000, 2000),
-          THREE.Math.randInt(-2000, 2000),
-          THREE.Math.randInt(-2000, 2000)
+          THREE.Math.randInt(-2500, 2500),
+          THREE.Math.randInt(-2500, 2500),
+          THREE.Math.randInt(-2500, 2500)
         ));
 
       this.pointsGeometry.colors.push(new THREE.Color(`hsl(136, 52%, ${THREE.Math.randInt(20, 70)}%)`));
@@ -147,8 +147,8 @@ export class AppComponent implements OnInit {
     const canvas = document.createElement('canvas');
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 
-    canvas.width = this.svgWidth;
-    canvas.height = 100;
+    canvas.width = this.sceneWidth;
+    canvas.height = this.sceneHeight;
 
     // init images
     const imagesURL = ['assets/sombra-logo.svg', 'assets/creating-value.svg'];
@@ -211,7 +211,7 @@ export class AppComponent implements OnInit {
       }
     }
 
-    const pointsAmount = 5850 * 5;
+    const pointsAmount = 5850 * 3;
 
     console.log('* imageCoords data length - ', this.shuffle(this.fillUp(imageCoords, pointsAmount)).length);
     return this.shuffle(this.fillUp(imageCoords, pointsAmount));
