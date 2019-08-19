@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
 
   private currentGalleryItem = 0;
   private animationFrameIndex = 0;
-  private scrollIndex = 0;
 
   private destroyStatus = false;
 
@@ -68,13 +67,13 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // RESET GEOMETRY
-  public reset(): void {
+  // SET SVG GEOMETRY
+  public svgInitialState(): void {
     this.destroyStatus = false;
     this.pointsGeometry.vertices.forEach((particle, index) => {
       const tl = new TimelineMax();
 
-      tl.to(particle, 2, {
+      tl.to(particle, 3, {
         x: this.initialGallery[this.currentGalleryItem][index][0],
         y: this.initialGallery[this.currentGalleryItem][index][1],
         z: Math.random() * 120
@@ -92,9 +91,11 @@ export class AppComponent implements OnInit {
 
     this.container.nativeElement.appendChild(this.renderer.domElement);
 
-    this.camera = new THREE.PerspectiveCamera(45, this.sceneWidth / this.sceneHeight, 0.1, 5000);
+    this.camera = new THREE.PerspectiveCamera(45, this.sceneWidth / this.sceneHeight, 0.1, 2000);
     this.camera.position.z = this.initCameraPosition;
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    this.pointsInit();
   }
 
   private pointsInit(): void {
@@ -106,10 +107,16 @@ export class AppComponent implements OnInit {
       alphaTest: 0.5
     });
 
-    this.gallery[0].forEach((el, index) => {
-      this.pointsGeometry.vertices.push(new THREE.Vector3(el[0], el[1], Math.random() * 80));
+    for (let i = 0; i < 29250; i++) {
+      this.pointsGeometry.vertices.push(
+        new THREE.Vector3(
+          THREE.Math.randInt(-2000, 2000),
+          THREE.Math.randInt(-2000, 2000),
+          THREE.Math.randInt(-2000, 2000)
+        ));
+
       this.pointsGeometry.colors.push(new THREE.Color(`hsl(136, 52%, ${THREE.Math.randInt(20, 70)}%)`));
-    });
+    }
 
     const pointCloud = new THREE.PointCloud(this.pointsGeometry, material);
 
@@ -156,7 +163,7 @@ export class AppComponent implements OnInit {
       });
 
 
-      this.pointsInit();
+      this.svgInitialState();
       this.animate();
     });
   }
@@ -206,7 +213,7 @@ export class AppComponent implements OnInit {
 
     const pointsAmount = 5850 * 5;
 
-    console.log('* imageCoords data length - ', imageCoords.length);
+    console.log('* imageCoords data length - ', this.shuffle(this.fillUp(imageCoords, pointsAmount)).length);
     return this.shuffle(this.fillUp(imageCoords, pointsAmount));
   }
 
