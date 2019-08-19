@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 
   private destroyStatus = false;
 
-  private initCameraPosition = 1900;
+  private initCameraPosition = 1700;
 
   constructor() {
   }
@@ -271,7 +271,7 @@ export class AppComponent implements OnInit {
   @HostListener('window:mousemove', ['$event'])
   cameraMovement(event: MouseEvent): void {
     const dX = ((this.sceneWidth / 2) - event.x) / 7;
-    const dY = ((this.sceneHeight / 2) - event.y) / 7;
+    const dY = ((this.sceneHeight / 2) - event.y) / 20;
     const dZ = this.initCameraPosition + dY;
 
     if (this.camera) {
