@@ -34,8 +34,9 @@ export class AppComponent implements OnInit {
   private animationFrameIndex = 0;
 
   private destroyStatus = false;
+  private scrollAnimation = false;
 
-  private initCameraPosition = 1700;
+  private initCameraPosition = 2500;
 
   constructor() {
   }
@@ -46,13 +47,13 @@ export class AppComponent implements OnInit {
     this.initSVGCanvas();
   }
 
-
   public destroy(): void {
-    this.destroyStatus = !this.destroyStatus;
+    this.destroyStatus = true;
   }
 
   // NEXT SVG
   public next(): void {
+    this.destroyStatus = false;
     this.currentGalleryItem = this.currentGalleryItem ? 0 : 1;
 
     this.pointsGeometry.vertices.forEach((particle, index) => {
@@ -61,7 +62,8 @@ export class AppComponent implements OnInit {
       tl.to(
         particle, 2, {
           x: this.gallery[this.currentGalleryItem][index][0],
-          y: this.gallery[this.currentGalleryItem][index][1]
+          y: this.gallery[this.currentGalleryItem][index][1],
+          z: Math.random() * 120
         }
       );
     });
@@ -83,7 +85,8 @@ export class AppComponent implements OnInit {
 
   private sceneInit() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xcccccc);
+    // this.scene.background = new THREE.Color(0xffffff);
+    this.scene.background = new THREE.Color(0xe5e5e5);
 
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -115,6 +118,7 @@ export class AppComponent implements OnInit {
           THREE.Math.randInt(-2500, 2500)
         ));
 
+      // this.pointsGeometry.colors.push(new THREE.Color(0x29803f));
       this.pointsGeometry.colors.push(new THREE.Color(`hsl(136, 52%, ${THREE.Math.randInt(20, 70)}%)`));
     }
 
@@ -223,15 +227,11 @@ export class AppComponent implements OnInit {
     this.pointsGeometry.vertices.forEach((vector, index) => {
 
       if (this.destroyStatus) {
-          const tang = Math.tan(index / 10) * vector.length() / 200;
-          const pi = Math.PI / Math.random() / 100;
+        dX = Math.sin((index * 10)) * (THREE.Math.smoothstep(2, -10, 10))
+        dY = Math.sin((index / 10)) * (THREE.Math.smoothstep(2, -10, 10))
+        dZ = Math.sin(index / 2) * (Math.random() * 100);
 
-          dX = Math.sin((index * 10)) * (Math.random() * 10)
-          dY = Math.sin(index / 100) / 100
-
-          dZ = Math.sin(index / 2) * (Math.random() * 100);
-
-          vector.add(new THREE.Vector3(dX, dY, dZ));
+        vector.add(new THREE.Vector3(dX, dY, dZ));
       } else {
         dX = Math.sin(this.animationFrameIndex / 10 + index) / 10;
         dY = Math.sin(this.animationFrameIndex / 10 + index / 2) / 10;
@@ -281,19 +281,20 @@ export class AppComponent implements OnInit {
     // TODO: on mouse over - reset x,y
   }
 
-  @HostListener('window:scroll', ['$event'])
-  scrollHandling(event): void {
-    // this.scrollIndex++
-    // if (window.scrollY >= 150) {
-    //   this.destroy();
-    // }
-    // if (window.scrollY >= 170) {
-    //   this.reset();
-    // }
+  @HostListener('window:scroll')
+  scrollHandling(): void {
+    if (window.scrollY >= 3) {
+      this.destroy();
+      this.scrollAnimation = true;
+    }
+    if (window.scrollY < 3 && this.scrollAnimation) {
+      this.next();
+      this.scrollAnimation = false;
+    }
   }
 
   private sceneSizes(): void {
     this.sceneWidth = window.innerWidth;
-    this.sceneHeight = window.innerWidth * 0.25;
+    this.sceneHeight = window.innerWidth * 0.4;
   }
 }
