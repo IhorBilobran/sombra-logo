@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   private sceneHeight;
 
   // enviroment
-  private camera;
+  private camera: any;
   private controls: any;
   private scene: any;
   private light: any;
@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
     this.initSVGCanvas();
   }
 
+  // ACTIVATE DESTROY ANIMATION
   public destroy(): void {
     this.destroyStatus = true;
   }
@@ -56,11 +57,11 @@ export class AppComponent implements OnInit {
     this.destroyStatus = false;
     this.currentGalleryItem = this.currentGalleryItem ? 0 : 1;
 
-    this.pointsGeometry.vertices.forEach((particle, index) => {
+    this.pointsGeometry.vertices.forEach((vector, index) => {
       const tl = new TimelineMax();
 
       tl.to(
-        particle, 2, {
+        vector, 2, {
           x: this.gallery[this.currentGalleryItem][index][0],
           y: this.gallery[this.currentGalleryItem][index][1],
           z: Math.random() * 120
@@ -72,10 +73,10 @@ export class AppComponent implements OnInit {
   // SET SVG GEOMETRY
   public svgInitialState(): void {
     this.destroyStatus = false;
-    this.pointsGeometry.vertices.forEach((particle, index) => {
+    this.pointsGeometry.vertices.forEach((vector, index) => {
       const tl = new TimelineMax();
 
-      tl.to(particle, 3, {
+      tl.to(vector, 3, {
         x: this.initialGallery[this.currentGalleryItem][index][0],
         y: this.initialGallery[this.currentGalleryItem][index][1],
         z: Math.random() * 120
@@ -137,6 +138,7 @@ export class AppComponent implements OnInit {
       img.onload = () => {
         imgs.push(img);
 
+        // find last img
         if (imgs.length === paths.length) {
           // success callback
           whenLoaded(imgs);
