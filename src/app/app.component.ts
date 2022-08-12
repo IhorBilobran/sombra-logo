@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 
 import * as THREE from 'three';
 // import { OrbitControls } from 'three-orbitcontrols-ts';
@@ -9,7 +9,7 @@ import { TimelineMax } from 'gsap';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
   @ViewChild('container', {static: false}) container: ElementRef<any>;
 
   private sceneWidth;
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.sceneSizes();
     this.sceneInit();
     this.initSVGCanvas();
