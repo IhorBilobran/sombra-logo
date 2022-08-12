@@ -10,7 +10,7 @@ import { TimelineMax } from 'gsap';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('container') container: ElementRef<any>;
+  @ViewChild('container', {static: false}) container: ElementRef<any>;
 
   private sceneWidth;
   private sceneHeight;
